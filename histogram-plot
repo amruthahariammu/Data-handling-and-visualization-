@@ -1,0 +1,30 @@
+# Install necessary packages if not already installed
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  install.packages("ggplot2")
+}
+if (!requireNamespace("viridis", quietly = TRUE)) {
+  install.packages("viridis")
+}
+
+# Load necessary libraries
+library(ggplot2)
+library(viridis)
+
+# Sample Data: Monthly Performance Scores
+performance_data <- data.frame(
+  Month = factor(c("Jan", "Jan", "Jan", "Feb", "Feb", "Feb", "Mar", "Mar", "Mar"),
+                 levels = c("Jan", "Feb", "Mar")),
+  Employee = c("A", "B", "C", "A", "B", "C", "A", "B", "C"),
+  Score = c(85, 90, 78, 88, 92, 80, 90, 94, 82)
+)
+
+# Create Histogram Plot using ggplot2
+ggplot(performance_data, aes(x = Score, fill = Employee)) +
+  geom_histogram(binwidth = 2, position = "dodge", color = "black", alpha = 0.7) +  # Use position "dodge" to separate bars
+  labs(title = "Monthly Performance Scores of Employees",
+       x = "Performance Score",
+       y = "Frequency") +
+  scale_fill_viridis_d(name = "Employee") +  # Use viridis color palette for better visibility
+  theme_minimal() +
+  facet_wrap(~Month) +  # Facet the plot by month to compare employees within each month
+  theme(legend.position = "top", legend.title = element_text(size = 10))
