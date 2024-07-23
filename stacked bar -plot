@@ -1,0 +1,41 @@
+# Install necessary packages if not already installed
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  install.packages("ggplot2")
+}
+if (!requireNamespace("reshape2", quietly = TRUE)) {
+  install.packages("reshape2")
+}
+if (!requireNamespace("viridis", quietly = TRUE)) {
+  install.packages("viridis")
+}
+
+# Load necessary libraries
+library(ggplot2)
+library(reshape2)
+library(viridis)
+
+# Sample Data: Customer Satisfaction Ratings
+satisfaction_data <- data.frame(
+  Category = c("Product Quality", "Customer Service", "Value for Money"),
+  Very_Dissatisfied = c(5, 10, 8),
+  Dissatisfied = c(15, 20, 12),
+  Neutral = c(25, 30, 28),
+  Satisfied = c(35, 25, 32),
+  Very_Satisfied = c(20, 15, 20)
+)
+
+# Reshape the data for ggplot2
+# Convert wide format to long format
+satisfaction_long <- melt(satisfaction_data, id.vars = "Category",
+                          variable.name = "Satisfaction_Level",
+                          value.name = "Count")
+
+# Create Stacked Bar Plot
+ggplot(satisfaction_long, aes(x = Category, y = Count, fill = Satisfaction_Level)) +
+  geom_bar(stat = "identity", position = "stack") +  # Create a stacked bar plot
+  labs(title = "Customer Satisfaction Survey Results",
+       x = "Category",
+       y = "Number of Responses") +
+  scale_fill_viridis_d(name = "Satisfaction Level") +  # Use viridis color palette
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
